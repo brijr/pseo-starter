@@ -4,10 +4,13 @@ import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+
 import sharp from 'sharp'
+import path from 'path'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -33,6 +36,12 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    seoPlugin({
+      collections: [],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `${doc.title}`,
+      generateDescription: ({ doc }) => doc.excerpt,
+    }),
     payloadCloudPlugin(),
     redirectsPlugin({}),
     formBuilderPlugin({
